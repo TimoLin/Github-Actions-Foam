@@ -36,7 +36,7 @@ jobs:
           sudo apt-get update -qq
           # Install prequisites
           sudo apt-get install -y build-essential cmake flex bison zlib1g-dev qt4-dev-tools libqt4-dev libqtwebkit-dev gnuplot 
-          sudo apt-get install -y libreadline-dev libncurses-dev libxt-dev libopenmpi-dev openmpi-bin libboost-system-dev libboost-thread-dev libgmp-dev libmpfr-dev
+          sudo apt-get install -y libreadline-dev libncurses-dev libxt-dev libopenmpi-dev openmpi-bin libboost-system-dev libboost-thread-dev libgmp-dev libmpfr-dev git
           # Install OF231
           sudo apt-get install  -y openfoam${OF_VERS}
           #wget --no-check-certificate https://raw.githubusercontent.com/TimoLin/OpenFOAM-doc/master/openfoam${OF_VERS}_0-1_amd64.deb
@@ -46,8 +46,8 @@ jobs:
       - name: Build fpvFoam
         run: |
           source /opt/openfoam${OF_VERS}/etc/bashrc
-          export LIB_FPV_SRC=$HOME/fpvFoam/src/
-          ./Allwmake
+          #export LIB_FPV_SRC=/__w/fpvFoam/fpvFoam/src/
+          #./Allwmake
 
       - name: Fetch fpvFoamCases
         run: |
@@ -58,6 +58,7 @@ jobs:
 
       - name: Test fpvFoam
         run: |
+          pwd
           cd fpvFoam
           ./Allrun
           tail log.fpvFoam
