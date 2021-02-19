@@ -52,17 +52,15 @@ jobs:
       - name: Fetch fpvFoamCases
         run: |
           source /opt/openfoam${OF_VERS}/etc/bashrc
-          cd ../
-          ls
           git clone https://github.com/TimoLin/foamTestCases.git
-          cd foamTestCases
-          ls
+          pwd
 
       - name: Test fpvFoam
         run: |
           pwd
-          ls
+          cd foamTestCases
+          pwd
           cd fpvFoam
-          ls
+          pwd
           ./Allrun
           tail log.fpvFoam
