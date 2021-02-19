@@ -23,11 +23,14 @@ jobs:
       - name: Install OpenFOAM
         run: |
           cat /etc/lsb-release
-          sudo apt-get update -qq
           sudo apt-get install wget
-          wget --no-check-certificate https://raw.githubusercontent.com/TimoLin/OpenFOAM-doc/master/openfoam${OF_VERS}_0-1_amd64.deb
-          sudo chmod 777 openfoam${OF_VERS}_0-1_amd64.deb
-          sudo apt-get -f install ./openfoam${OF_VERS}_0-1_amd64.deb
+          sudo sh -c "wget -O - https://dl.openfoam.org/gpg.key | apt-key add -"
+          sudo add-apt-repository http://dl.openfoam.org/ubuntu
+          sudo apt-get update -qq
+          sudo apt-get install openfoam${OF_VERS}
+          #wget --no-check-certificate https://raw.githubusercontent.com/TimoLin/OpenFOAM-doc/master/openfoam${OF_VERS}_0-1_amd64.deb
+          #sudo chmod 777 openfoam${OF_VERS}_0-1_amd64.deb
+          #sudo apt-get -f install ./openfoam${OF_VERS}_0-1_amd64.deb
 
       - name: Build fpvFoam
         run: |
