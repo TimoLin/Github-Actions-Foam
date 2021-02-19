@@ -53,12 +53,16 @@ jobs:
         run: |
           source /opt/openfoam${OF_VERS}/etc/bashrc
           cd ../
+          ls
           git clone https://github.com/TimoLin/foamTestCases.git
           cd foamTestCases
+          ls
 
       - name: Test fpvFoam
         run: |
           pwd
+          ls
           cd fpvFoam
+          ls
           ./Allrun
           tail log.fpvFoam
