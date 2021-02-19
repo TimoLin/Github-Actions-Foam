@@ -1,0 +1,49 @@
+# Originally Travis CI setup for fpvFoam
+# Ref: https://github.com/turbinesFoam/turbinesFoam
+# Migrate to Github Actions
+
+name: Built fpvFoam
+
+# Triggered when code is pushed to any branch in the repository
+on: [push, pull_request]
+
+# Jobs
+jobs:
+  fpvFoam-build:
+    
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:trusty 
+      env:
+        OF_VERS: 231
+
+    steps:
+      # Check out current branch
+      - uses: actions/checkout@v2
+      - name: Install OpenFOAM
+        run: |
+          cat /etc/lsb-release
+          sudo apt-get update -qq
+          sudo apt-get install wget
+          wget --no-check-certificate https://raw.githubusercontent.com/TimoLin/OpenFOAM-doc/master/openfoam${OF_VERS}_0-1_amd64.deb
+          sudo chmod 777 openfoam${OF_VERS}_0-1_amd64.deb
+          sudo apt-get -f install ./openfoam${OF_VERS}_0-1_amd64.deb
+
+      - name: Build fpvFoam
+        run: |
+          source /opt/openfoam${OF_VERS}/etc/bashrc
+          export LIB_FPV_SRC=~/build/TimoLin/fpvFoam/src/
+          ./Allwmake
+
+      - name: Fetch fpvFoamCases
+        run: |
+          source /opt/openfoam${OF_VERS}/etc/bashrc
+          cd ../
+          git clone https://github.com/TimoLin/foamTestCases.git
+          cd foamTestCases
+
+      - name: Test fpvFoam
+        run: |
+          cd fpvFoam
+          ./Allrun
+          tail log.fpvFoam
