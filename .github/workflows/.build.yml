@@ -24,6 +24,7 @@ jobs:
       - name: Install OpenFOAM
         run: |
           cat /etc/lsb-release
+          echo $SHELL
           sudo apt-get install -y wget software-properties-common
           sudo sh -c "wget -O - https://dl.openfoam.org/gpg.key | apt-key add -"
           sudo add-apt-repository http://dl.openfoam.org/ubuntu
