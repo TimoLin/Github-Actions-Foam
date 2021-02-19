@@ -25,6 +25,7 @@ jobs:
         run: |
           cat /etc/lsb-release
           sudo apt-get install -y bash
+          sudo rm /bin/sh
           sudo ln -s /bin/bash /bin/sh
           sudo apt-get install -y wget software-properties-common
           sudo sh -c "wget -O - https://dl.openfoam.org/gpg.key | apt-key add -"
