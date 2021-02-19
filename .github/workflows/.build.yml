@@ -23,16 +23,21 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install OpenFOAM
         run: |
-          cat /etc/lsb-release
+          pwd
+
+          # Install and change shell to bash
           sudo apt-get install -y bash
           sudo rm /bin/sh
           sudo ln -s /bin/bash /bin/sh
+          # Add OpenFOAM binary release repository
           sudo apt-get install -y wget software-properties-common
           sudo sh -c "wget -O - https://dl.openfoam.org/gpg.key | apt-key add -"
           sudo add-apt-repository http://dl.openfoam.org/ubuntu
           sudo apt-get update -qq
+          # Install prequisites
           sudo apt-get install -y build-essential cmake flex bison zlib1g-dev qt4-dev-tools libqt4-dev libqtwebkit-dev gnuplot 
           sudo apt-get install -y libreadline-dev libncurses-dev libxt-dev libopenmpi-dev openmpi-bin libboost-system-dev libboost-thread-dev libgmp-dev libmpfr-dev
+          # Install OF231
           sudo apt-get install  -y openfoam${OF_VERS}
           #wget --no-check-certificate https://raw.githubusercontent.com/TimoLin/OpenFOAM-doc/master/openfoam${OF_VERS}_0-1_amd64.deb
           #sudo chmod 777 openfoam${OF_VERS}_0-1_amd64.deb
@@ -41,7 +46,7 @@ jobs:
       - name: Build fpvFoam
         run: |
           source /opt/openfoam${OF_VERS}/etc/bashrc
-          export LIB_FPV_SRC=~/build/TimoLin/fpvFoam/src/
+          export LIB_FPV_SRC=$HOME/fpvFoam/src/
           ./Allwmake
 
       - name: Fetch fpvFoamCases
